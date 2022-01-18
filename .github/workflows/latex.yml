@@ -1,0 +1,23 @@
+name: Build LaTeX document
+on:
+  push:
+    tags:
+      - "v**"
+jobs:
+  build_latex:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.9.1
+        with:
+          access_token: ${{ github.token }}
+      - name: Set up Git repository
+        uses: actions/checkout@v2
+      - name: Compile LaTeX document
+        uses: xu-cheng/latex-action@v2
+        with:
+          root_file: main.tex
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: main.pdf
